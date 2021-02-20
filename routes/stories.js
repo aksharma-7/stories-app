@@ -121,4 +121,24 @@ router.delete('/add', ensureAuth, async (req, res) => {
   }
 });
 
+// @desc   Show add page
+// @route  GET /stories/user/:userId
+router.get('/user/:userId', ensureAuth, async (req, res) => {
+  try {
+    const stories = await Story.find({
+      user: req.params.userId,
+      status: 'public',
+    })
+      .populate('user')
+      .lean();
+
+    res.render('stories/index', {
+      stories,
+    });
+  } catch (error) {
+    console.error(error);
+    res.render('error/404');
+  }
+});
+
 module.exports = router;
