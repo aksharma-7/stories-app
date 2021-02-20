@@ -12,12 +12,15 @@ connectDB();
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
-  app.unsubscribe(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 //Handlebars
 app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', '.hbs');
+
+//Routes
+app.use('/', require('./routes/index'));
 
 const PORT = process.env.PORT || 3000;
 
